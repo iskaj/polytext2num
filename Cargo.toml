@@ -1,0 +1,15 @@
+[package]
+name = "dutchtext2num"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "dutchtext2num"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20", features = ["extension-module"] }
+text2num = "2.6.0"
+
+[build-dependencies]
+maturin = "1.8.3"

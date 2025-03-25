@@ -1,0 +1,15 @@
+[build-system]
+requires = ["maturin>=1.4"]
+build-backend = "maturin"
+
+[project]
+name = "dutchtext2num"
+version = "0.1.0"
+description = "Convert Dutch written numbers to digits using Rust + Python"
+authors = [{name = "Your Name", email = "iskajjanssen1@hotmail.com"}]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+
+[tool.maturin]
+bindings = "pyo3"
