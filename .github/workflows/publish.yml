@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    name: Build and Publish Wheel
     runs-on: ubuntu-latest
 
     steps:
@@ -14,6 +15,4 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           command: publish
-          args: --skip-existing
-        env:
-          MATURIN_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          args: --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} --skip-existing
