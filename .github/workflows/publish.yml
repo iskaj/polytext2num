@@ -1,47 +1,34 @@
-name: Build and Publish Wheels to PyPI
+name: Build and publish wheels
 
 on:
   release:
     types: [published]
 
 jobs:
-  build:
-    name: Build wheels for CPython
+  build-publish:
+    name: Build manylinux wheels and publish to PyPI
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out code
+        uses: actions/checkout@v4
 
-      - uses: PyO3/maturin-action@v1
-        with:
-          command: build
-          args: --release --interpreter python${{ matrix.python }} --manylinux 2014
-        env:
-          MATURIN_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Install Docker (if needed)
+        run: sudo apt-get update && sudo apt-get install -y docker.io
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: wheels
-          path: target/wheels
+      - name: Build manylinux wheels
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/io ghcr.io/pyo3/maturin build \
+            --release \
+            --manylinux 2014 \
+            --interpreter python3.7 \
+            --interpreter python3.8 \
+            --interpreter python3.9 \
+            --interpreter python3.10 \
+            --interpreter python3.11 \
+            --interpreter python3.12
 
-  publish:
-    name: Publish to PyPI
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: wheels
-          path: target/wheels
-
-      - name: Publish built wheels to PyPI
-        uses: PyO3/maturin-action@v1
-        with:
-          command: upload
-          args: --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} target/wheels/*.whl
+      - name: Publish wheels to PyPI
+        run: |
+          pip install twine
+          twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} target/wheels/*.whl
