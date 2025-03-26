@@ -31,9 +31,9 @@ jobs:
       - name: List wheel output v2
         run: find . -name "*.whl"
 
-      - name: Upload wheels to PyPI
+      - name: Upload wheels
         run: |
           pip install twine
-          ls -lh target/wheels  # For visibility
-          python3 -m twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} target/wheels/*.whl
-
+          FILES=$(ls target/wheels/*.whl | tr '\n' ' ')
+          echo "Uploading: $FILES"
+          python3 -m twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} $FILES
