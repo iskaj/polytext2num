@@ -1,5 +1,9 @@
 use pyo3::prelude::*;
-use text2num::{Language, text2digits, replace_numbers};
+use pyo3::exceptions::PyValueError;
+use text2num::{Language, text2digits};
+use text2num::word_to_digit::replace_numbers;
+
+
 
 #[pyfunction]
 fn text_to_number(input: &str, language: &str) -> PyResult<String> {
@@ -30,6 +34,6 @@ fn get_language(lang: &str) -> PyResult<Language> {
 #[pymodule]
 fn polytext2num(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(text_to_number, m)?)?;
-    m.add_function(wrap_pyfunction!(replace_numbers_in_text, m)?)?;
+    m.add_function(wrap_pyfunction!(replace_all_numbers, m)?)?;
     Ok(())
 }
