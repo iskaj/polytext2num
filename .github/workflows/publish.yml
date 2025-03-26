@@ -13,9 +13,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Install Docker (if needed)
-        run: sudo apt-get update && sudo apt-get install -y docker.io
-
       - name: Build manylinux wheels
         run: |
           docker run --rm -v ${{ github.workspace }}:/io ghcr.io/pyo3/maturin build \
