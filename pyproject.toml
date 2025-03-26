@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "polytext2num"
-version = "0.2.4"
+version = "0.2.5"
 description = "Convert written-out numbers to digits in multiple languages using a fast Rust + Python binding."
 authors = [{name = "Iskaj", email = "iskajjanssen1@hotmail.com"}]
 readme = "README.md"
