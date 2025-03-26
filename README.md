@@ -1,17 +1,17 @@
 # text2num-py
 
-Convert Dutch number words (e.g. `"duizendnegenhonderddrieënzeventig"`) into digits using Rust + Python.
+Convert Dutch written out numbers (e.g. `"duizendnegenhonderddrieënzeventig"`) into digits using Rust + Python.
 
 ## Installation
 
 ```bash
-pip install git+https://github.com/your-username/text2num_py.git
+pip install dutchtext2num
 ```
 
 ## Usage
 ```python
-import text2num_py
+import dutchtext2num
 
-print(text2num_py.dutch_to_number("duizendnegenhonderddrieënzeventig"))
+print(dutchtext2num.dutch_to_number("duizendnegenhonderddrieënzeventig"))
 # Should output: "1973"
 ```
