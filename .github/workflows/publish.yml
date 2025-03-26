@@ -34,6 +34,7 @@ jobs:
       - name: Upload wheels
         run: |
           pip install twine
-          FILES=$(ls target/wheels/*.whl | tr '\n' ' ')
-          echo "Uploading: $FILES"
-          python3 -m twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} $FILES
+          FILES=(target/wheels/*.whl)
+          echo "Uploading ${#FILES[@]} wheels:"
+          printf ' - %s\n' "${FILES[@]}"
+          python3 -m twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} "${FILES[@]}"
