@@ -3,10 +3,10 @@ requires = ["maturin>=1.4"]
 build-backend = "maturin"
 
 [project]
-name = "dutchtext2num"
-version = "0.1.1"
-description = "Convert Dutch written numbers to digits using Rust + Python"
-authors = [{name = "Your Name", email = "iskajjanssen1@hotmail.com"}]
+name = "polytext2num"
+version = "0.2."
+description = "Convert written-out numbers to digits in multiple languages using a fast Rust + Python binding."
+authors = [{name = "Iskaj", email = "iskajjanssen1@hotmail.com"}]
 readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}

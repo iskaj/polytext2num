@@ -10,8 +10,9 @@ pip install dutchtext2num
 
 ## Usage
 ```python
-import dutchtext2num
+from polytext2num import text_to_number
 
-print(dutchtext2num.dutch_to_number("duizendnegenhonderddrieënzeventig"))
-# Should output: "1973"
+print(text_to_number("duizendnegenhonderddrieënzeventig", "dutch"))    # → "1973"
+print(text_to_number("one thousand nine hundred seventy-three", "en")) # → "1973"
+print(text_to_number("quatre-vingt-dix", "french"))                    # → "90"
 ```
