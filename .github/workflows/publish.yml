@@ -31,10 +31,16 @@ jobs:
       - name: List wheel output v2
         run: find . -name "*.whl"
 
+      - name: list python version
+        run: |
+          which python3
+          python3 -m site
+          echo $PATH
+
       - name: Upload wheels
         run: |
-          pip install twine
+          pip install --user twine
           FILES=(target/wheels/*.whl)
           echo "Uploading ${#FILES[@]} wheels:"
           printf ' - %s\n' "${FILES[@]}"
-          python3 -m twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} "${FILES[@]}"
+          twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} "${FILES[@]}"
