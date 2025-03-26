@@ -7,30 +7,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [x86_64]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: PyO3/maturin-action@v1
         with:
-          python-version: "3.11"
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install Maturin
-        run: pip install maturin
-
-      - name: Build manylinux wheel
-        run: |
-          maturin build --release --manylinux 2014
-
-      - name: Upload to PyPI
+          command: publish
+          args: --skip-existing
         env:
           MATURIN_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          maturin publish --username __token__ --password $MATURIN_PASSWORD --skip-existing
