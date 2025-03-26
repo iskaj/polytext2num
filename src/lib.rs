@@ -3,7 +3,7 @@ use pyo3::exceptions::PyValueError;
 use text2num::{Language, text2digits, replace_numbers_in_text};
 
 #[pyfunction]
-fn text2num(input: &str, language: &str, threshold: Option<f64>) -> PyResult<String> {
+fn txt2num(input: &str, language: &str, threshold: Option<f64>) -> PyResult<String> {
     let lang = get_language(language)?;
     let threshold = threshold.unwrap_or(20.0);
     Ok(replace_numbers_in_text(input, &lang, threshold))
@@ -24,6 +24,6 @@ fn get_language(lang: &str) -> PyResult<Language> {
 
 #[pymodule]
 fn polytext2num(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(text2num, m)?)?;
+    m.add_function(wrap_pyfunction!(txt2num, m)?)?;
     Ok(())
 }
