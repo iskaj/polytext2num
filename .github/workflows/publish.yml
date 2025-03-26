@@ -47,4 +47,3 @@ jobs:
             printf " - %s\n" "${FILES[@]}"
             twine upload --skip-existing --username __token__ --password "${{ secrets.PYPI_API_TOKEN }}" "${FILES[@]}"
           '
-

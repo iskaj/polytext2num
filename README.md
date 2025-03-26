@@ -19,9 +19,13 @@ pip install polytext2num
 
 ## Usage
 ```python
-from polytext2num import text_to_number
+from polytext2num import text_to_number, replace_all_numbers
 
 print(text_to_number("duizendnegenhonderddrieënzeventig", "dutch"))    # → "1973"
 print(text_to_number("one thousand nine hundred seventy-three", "en")) # → "1973"
 print(text_to_number("quatre-vingt-dix", "french"))                    # → "90"
+
+
+replace_all_numbers("I have two apples and one banana", "english", threshold=10.0)
+# → "I have 2 apples and 1 banana"
 ```

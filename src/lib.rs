@@ -1,26 +1,35 @@
 use pyo3::prelude::*;
-use text2num::{Language, text2digits};
+use text2num::{Language, text2digits, replace_numbers};
 
 #[pyfunction]
 fn text_to_number(input: &str, language: &str) -> PyResult<String> {
-    let lang = match language.to_lowercase().as_str() {
-        "en" | "english" => Language::english(),
-        "nl" | "dutch"   => Language::dutch(),
-        "fr" | "french"  => Language::french(),
-        "es" | "spanish" => Language::spanish(),
-        "de" | "german"  => Language::german(),
-        "it" | "italian" => Language::italian(),
-        _ => return Err(pyo3::exceptions::PyValueError::new_err("Unsupported language")),
-    };
+    let lang = get_language(language)?;
+    text2digits(input, &lang).map_err(|e| PyValueError::new_err(format!("{:?}", e)))
+}
 
-    match text2digits(input, &lang) {
-        Ok(number) => Ok(number),
-        Err(e) => Err(pyo3::exceptions::PyValueError::new_err(format!("{:?}", e))),
+#[pyfunction]
+fn replace_all_numbers(input: &str, language: &str, threshold: Option<f64>) -> PyResult<String> {
+    let lang = get_language(language)?;
+    let threshold = threshold.unwrap_or(10.0); // default threshold if not given
+    Ok(replace_numbers(input, &lang, threshold))
+}
+
+// Internal helper to map string to Language
+fn get_language(lang: &str) -> PyResult<Language> {
+    match lang.to_lowercase().as_str() {
+        "en" | "english" => Ok(Language::english()),
+        "nl" | "dutch" => Ok(Language::dutch()),
+        "fr" | "french" => Ok(Language::french()),
+        "es" | "spanish" => Ok(Language::spanish()),
+        "de" | "german" => Ok(Language::german()),
+        "it" | "italian" => Ok(Language::italian()),
+        _ => Err(PyValueError::new_err("Unsupported language")),
     }
 }
 
 #[pymodule]
 fn polytext2num(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(text_to_number, m)?)?;
+    m.add_function(wrap_pyfunction!(replace_numbers_in_text, m)?)?;
     Ok(())
 }
