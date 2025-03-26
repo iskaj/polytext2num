@@ -1,4 +1,4 @@
-name: Build and Publish to PyPI
+name: Build and Publish Wheels to PyPI
 
 on:
   release:
@@ -6,13 +6,42 @@ on:
 
 jobs:
   build:
-    name: Build and Publish Wheel
+    name: Build wheels for CPython
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: PyO3/maturin-action@v1
         with:
-          command: publish
-          args: --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} --skip-existing --no-sdist
+          command: build
+          args: --release --interpreter python${{ matrix.python }} --manylinux 2014
+        env:
+          MATURIN_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels
+          path: target/wheels
+
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
+          path: target/wheels
+
+      - name: Publish built wheels to PyPI
+        uses: PyO3/maturin-action@v1
+        with:
+          command: upload
+          args: --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} target/wheels/*.whl
