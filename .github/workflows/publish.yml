@@ -25,7 +25,14 @@ jobs:
             --interpreter python3.11 \
             --interpreter python3.12
 
+      - name: List wheel output
+        run: ls -lh target/wheels
+
+      - name: List wheel output v2
+        run: find . -name "*.whl"
+
       - name: Publish wheels to PyPI
         run: |
           pip install twine
-          twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} target/wheels/*.whl
+          twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} target/wheels/*.whl || twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} /io/target/wheels/*.whl
+
