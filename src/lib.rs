@@ -1,8 +1,6 @@
 use pyo3::prelude::*;
 use pyo3::exceptions::PyValueError;
-use text2num::{Language, text2digits};
-use text2num::word_to_digit::replace_numbers;
-
+use text2num::{Language, text2digits, replace_numbers_in_text};
 
 
 #[pyfunction]
@@ -14,8 +12,8 @@ fn text_to_number(input: &str, language: &str) -> PyResult<String> {
 #[pyfunction]
 fn replace_all_numbers(input: &str, language: &str, threshold: Option<f64>) -> PyResult<String> {
     let lang = get_language(language)?;
-    let threshold = threshold.unwrap_or(10.0); // default threshold if not given
-    Ok(replace_numbers(input, &lang, threshold))
+    let threshold = threshold.unwrap_or(10.0);
+    Ok(replace_numbers_in_text(input, &lang, threshold))
 }
 
 // Internal helper to map string to Language
