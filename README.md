@@ -19,17 +19,17 @@ pip install polytext2num
 
 ## Usage
 ```python
-from polytext2num import text2num
+from polytext2num import txt2num
 
-print(text2num("duizendnegenhonderddrieënzeventig", "dutch"))    
+print(txt2num("duizendnegenhonderddrieënzeventig", "dutch"))    
 # "1973"
 
-print(text2num("one thousand nine hundred seventy-three", "en")) 
+print(txt2num("one thousand nine hundred seventy-three", "en")) 
 # "1973"
 
-print(text2num("quatre-vingt-dix", "french")) 
+print(txt2num("quatre-vingt-dix", "french")) 
 # "90"
 
-print(text2num("I have two apples and one banana, twenty kegs.", "en", threshold = 10)) 
+print(txt2num("I have two apples and one banana, twenty kegs.", "en", threshold = 10)) 
 # "I have two apples and one banana, 20 kegs."
 ```
