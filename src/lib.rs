@@ -2,17 +2,10 @@ use pyo3::prelude::*;
 use pyo3::exceptions::PyValueError;
 use text2num::{Language, text2digits, replace_numbers_in_text};
 
-
 #[pyfunction]
-fn text_to_number(input: &str, language: &str) -> PyResult<String> {
+fn text2num(input: &str, language: &str, threshold: Option<f64>) -> PyResult<String> {
     let lang = get_language(language)?;
-    text2digits(input, &lang).map_err(|e| PyValueError::new_err(format!("{:?}", e)))
-}
-
-#[pyfunction]
-fn replace_all_numbers(input: &str, language: &str, threshold: Option<f64>) -> PyResult<String> {
-    let lang = get_language(language)?;
-    let threshold = threshold.unwrap_or(10.0);
+    let threshold = threshold.unwrap_or(20.0);
     Ok(replace_numbers_in_text(input, &lang, threshold))
 }
 
@@ -31,7 +24,6 @@ fn get_language(lang: &str) -> PyResult<Language> {
 
 #[pymodule]
 fn polytext2num(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(text_to_number, m)?)?;
-    m.add_function(wrap_pyfunction!(replace_all_numbers, m)?)?;
+    m.add_function(wrap_pyfunction!(text2num, m)?)?;
     Ok(())
 }
