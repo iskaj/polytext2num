@@ -1,13 +1,15 @@
-name: Publish to PyPI
+name: Build and Publish to PyPI
 
 on:
   release:
     types: [published]
 
 jobs:
-  build-and-publish:
-    name: Build and Publish to PyPI
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [x86_64]
 
     steps:
       - uses: actions/checkout@v4
@@ -20,14 +22,15 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install maturin
+      - name: Install Maturin
         run: pip install maturin
 
-      - name: Build wheels
-        run: maturin build --release
+      - name: Build manylinux wheel
+        run: |
+          maturin build --release --manylinux 2014
 
-      - name: Publish to PyPI
+      - name: Upload to PyPI
         env:
           MATURIN_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          maturin publish --username __token__ --password $MATURIN_PASSWORD
+          maturin publish --username __token__ --password $MATURIN_PASSWORD --skip-existing
