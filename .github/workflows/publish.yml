@@ -37,11 +37,14 @@ jobs:
           python3 -m site
           echo $PATH
 
-      - name: Upload wheels
-        run: >
-          pip install --user twine &&
-          FILES=(target/wheels/*.whl) &&
-          echo "Uploading ${#FILES[@]} wheels:" &&
-          printf ' - %s\n' "${FILES[@]}" &&
-          /home/runner/.local/bin/twine upload --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} "${FILES[@]}"
+      - name: Upload wheels to PyPI
+        run: |
+          pip install --user twine
+          bash -c '
+            export PATH="$HOME/.local/bin:$PATH"
+            FILES=(target/wheels/*.whl)
+            echo "Uploading ${#FILES[@]} wheels:"
+            printf " - %s\n" "${FILES[@]}"
+            twine upload --skip-existing --username __token__ --password "${{ secrets.PYPI_API_TOKEN }}" "${FILES[@]}"
+          '
 
