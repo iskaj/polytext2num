@@ -1,6 +1,6 @@
 [package]
 name = "polytext2num"
-version = "0.2.24"
+version = "0.2.26"
 edition = "2024"
 
 [lib]
