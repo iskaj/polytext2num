@@ -1,4 +1,4 @@
-# text2num-py
+# polytext2num
 
 Convert written out numbers (e.g. `"duizendnegenhonderddrieënzeventig"`) into digits (1973) using a fast Rust + Python binding.
 
