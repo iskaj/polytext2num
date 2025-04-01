@@ -19,7 +19,13 @@ pip install polytext2num
 
 ## Usage
 ```python
-from polytext2num import txt2num
+from polytext2num import txt2num, word2num
+
+print(word2num("negenhonderdvijfenzestig", language="dutch"))
+# → "965"
+
+print(word2num("two hundred and thirty four", language="english"))
+# → "234"
 
 print(txt2num("duizendnegenhonderddrieënzeventig", "dutch"))    
 # "1973"

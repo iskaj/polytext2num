@@ -9,6 +9,12 @@ fn txt2num(input: &str, language: &str, threshold: Option<f64>) -> PyResult<Stri
     Ok(replace_numbers_in_text(input, &lang, threshold))
 }
 
+#[pyfunction]
+fn word2num(input: &str, language: &str) -> PyResult<String> {
+    let lang = get_language(language)?;
+    text2digits(input, &lang).map_err(|e| PyValueError::new_err(format!("{:?}", e)))
+}
+
 // Internal helper to map string to Language
 fn get_language(lang: &str) -> PyResult<Language> {
     match lang.to_lowercase().as_str() {
@@ -25,5 +31,6 @@ fn get_language(lang: &str) -> PyResult<Language> {
 #[pymodule]
 fn polytext2num(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(txt2num, m)?)?;
+    m.add_function(wrap_pyfunction!(word2num, m)?)?;
     Ok(())
 }
